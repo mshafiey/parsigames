@@ -1,4 +1,4 @@
-# Template only — copy the real, filled-in version into parsigames-infra/wrangler.toml.
+# Template only — copy this into your private deployment configuration.
 # Never commit real Account IDs or resource IDs here.
 name = "parsigames"
 compatibility_date = "2024-01-01"

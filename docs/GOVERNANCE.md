@@ -29,9 +29,9 @@ Maintainer) را بر عهده دارد. کنترل نهایی بر ادغام (
 
 ### دفتر شفافیت مالی
 
-در فاز بعدی پروژه — پس از آن‌که درآمد واقعی برای گزارش وجود داشته باشد —
+در آینده — پس از آن‌که درآمد واقعی برای گزارش وجود داشته باشد —
 سندی عمومی با عنوان `docs/financial-transparency.md` به‌عنوان دفتر شفافیت
-مالی اضافه خواهد شد. این سند در فاز فعلی (فاز صفر) ایجاد نمی‌شود، چرا که هنوز
+مالی اضافه خواهد شد. این سند در حال حاضر ایجاد نشده است، چرا که هنوز
 درآمدی برای گزارش وجود ندارد.
 
 ## English
@@ -65,7 +65,7 @@ obligation to share that income with the project.
 
 ### Financial Transparency Ledger
 
-In a later phase — once there is actual revenue to report — a public
+In the future — once there is actual revenue to report — a public
 document titled `docs/financial-transparency.md` will be added as the
-financial transparency ledger. This document is not created in the current
-phase (Phase 0), since there is no revenue yet to report.
+financial transparency ledger. This document does not exist at present,
+since there is no revenue yet to report.

@@ -1,10 +1,12 @@
 # Contributing / راهنمای مشارکت
 
 Thank you for your interest in contributing to Parsi Games. This document
-explains the rules and process for contributing.
+explains the rules and process for contributing. Please also read the
+project's [Code of Conduct](CODE_OF_CONDUCT.md) before contributing.
 
 از علاقهٔ شما به مشارکت در پارسی گیمز سپاسگزاریم. این سند قوانین و فرایند
-مشارکت را توضیح می‌دهد.
+مشارکت را توضیح می‌دهد. پیش از مشارکت، لطفاً [آیین‌نامهٔ رفتاری](CODE_OF_CONDUCT.md)
+پروژه را نیز مطالعه کنید.
 
 ## ۱. کپی‌رایت و شخصیت‌های دارای مالکیت معنوی
 

@@ -38,6 +38,8 @@ npm run dev
 این پروژه تحت مجوز [GNU Affero General Public License v3.0](LICENSE)
 (AGPL-3.0) منتشر شده است.
 
+Copyright (C) 2026 Parsi Games contributors
+
 ### راهنماها
 
 - [آیین‌نامهٔ رفتاری](CODE_OF_CONDUCT.md)
@@ -85,6 +87,8 @@ npm run dev
 
 This project is released under the
 [GNU Affero General Public License v3.0](LICENSE) (AGPL-3.0).
+
+Copyright (C) 2026 Parsi Games contributors
 
 ### Guides
 
