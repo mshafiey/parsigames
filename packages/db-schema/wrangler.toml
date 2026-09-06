@@ -1,0 +1,7 @@
+name = "db-schema-migrations"
+compatibility_date = "2024-01-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "parsigames-db"
+database_id = "66fc5afe-5f6e-4e34-aa3f-e0ce9126301e"
