@@ -1,0 +1,10 @@
+:root {
+  --color-turquoise: #06b6a4;
+  --color-lapis: #1e3a8a;
+  --color-crimson: #9f1d35;
+  --color-gold: #c9a84c;
+  --color-bg: #fbfaf7;
+  --color-text: #1a1a1a;
+  --font-fa: 'Vazirmatn', Tahoma, sans-serif;
+  --font-en: system-ui, -apple-system, 'Segoe UI', sans-serif;
+}

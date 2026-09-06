@@ -1,0 +1,57 @@
+---
+import '../styles/tokens.css';
+---
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Parsi Games — پارسی گیمز</title>
+  <meta name="description" content="Building today, for a shared Iranian tomorrow. — امروز می‌سازیم، برای فردایی که همهٔ ایرانی‌ها آزادانه در آن سهیم‌اند." />
+  <style>
+    body {
+      margin: 0;
+      background: var(--color-bg);
+      color: var(--color-text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
+      padding: 2rem;
+      gap: 2rem;
+    }
+    .block { max-width: 32rem; }
+    .fa { direction: rtl; font-family: var(--font-fa); }
+    .en { direction: ltr; font-family: var(--font-en); }
+    h1 { color: var(--color-lapis); font-size: 2rem; margin: 0 0 0.5rem; }
+    p.tagline { color: var(--color-turquoise); font-weight: 600; margin: 0 0 1rem; }
+    p.desc { margin: 0 0 1.5rem; line-height: 1.6; }
+    a.cta {
+      display: inline-block;
+      background: var(--color-crimson);
+      color: white;
+      text-decoration: none;
+      padding: 0.75rem 1.75rem;
+      border-radius: 0.4rem;
+      font-weight: 600;
+      border-bottom: 3px solid var(--color-gold);
+    }
+  </style>
+</head>
+<body>
+  <div class="block fa">
+    <h1>پارسی گیمز</h1>
+    <p class="tagline">امروز می‌سازیم، برای فردایی که همهٔ ایرانی‌ها آزادانه در آن سهیم‌اند.</p>
+    <p class="desc">پلتفرمی اوپن‌سورس که متخصصان ایرانی حوزهٔ بازی‌سازی، برنامه‌نویسی و هنر دیجیتال را در سرتاسر جهان گرد هم می‌آورد.</p>
+    <a class="cta" href="#join">به ما بپیوندید</a>
+  </div>
+  <div class="block en">
+    <h1>Parsi Games</h1>
+    <p class="tagline">Building today, for a shared Iranian tomorrow.</p>
+    <p class="desc">An open-source platform connecting Iranian professionals in game development, programming, and digital art around the world.</p>
+    <a class="cta" href="#join">Join us</a>
+  </div>
+</body>
+</html>
