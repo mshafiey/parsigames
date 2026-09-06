@@ -1,0 +1,56 @@
+---
+import '../styles/tokens.css';
+---
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ورود — Parsi Games</title>
+  <style>
+    body { font-family: var(--font-fa); background: var(--color-bg); color: var(--color-text); display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 2rem; gap: 1.5rem; }
+    .block { max-width: 26rem; width: 100%; text-align: center; }
+    .en { direction: ltr; font-family: var(--font-en); margin-top: 2rem; }
+    a.btn, button.btn { display: block; width: 100%; padding: 0.75rem; margin: 0.5rem 0; border-radius: 0.4rem; border: none; font-weight: 600; cursor: pointer; text-decoration: none; }
+    a.btn { background: var(--color-lapis); color: white; }
+    input { width: 100%; padding: 0.6rem; margin-bottom: 0.5rem; border-radius: 0.4rem; border: 1px solid #ccc; box-sizing: border-box; }
+    button.btn { background: var(--color-turquoise); color: white; }
+    #status { min-height: 1.5rem; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <div class="block" lang="fa" dir="rtl">
+    <h1>ورود به پارسی گیمز</h1>
+    <a class="btn" href="https://api.parsigames.org/auth/github/start">ورود با گیت‌هاب</a>
+    <p>یا با ایمیل:</p>
+    <input type="email" id="email" placeholder="ایمیل شما" />
+    <button class="btn" id="send">ارسال لینک ورود</button>
+    <div id="status"></div>
+  </div>
+  <div class="block en" lang="en" dir="ltr">
+    <h1>Sign in to Parsi Games</h1>
+    <a class="btn" href="https://api.parsigames.org/auth/github/start">Sign in with GitHub</a>
+    <p>or with email:</p>
+    <input type="email" id="email-en" placeholder="Your email" />
+    <button class="btn" id="send-en">Send login link</button>
+    <div id="status-en"></div>
+  </div>
+  <script type="module">
+    import { requestMagicLink } from '/src/lib/api.ts';
+
+    async function handleSend(emailInputId, statusId) {
+      const email = document.getElementById(emailInputId).value.trim();
+      const status = document.getElementById(statusId);
+      if (!email) return;
+      status.textContent = '...';
+      const result = await requestMagicLink(email);
+      status.textContent = result.ok
+        ? 'لینک ورود ارسال شد — ایمیل خود را بررسی کنید. / Link sent — check your email.'
+        : `خطا / Error: ${result.error}`;
+    }
+
+    document.getElementById('send').addEventListener('click', () => handleSend('email', 'status'));
+    document.getElementById('send-en').addEventListener('click', () => handleSend('email-en', 'status-en'));
+  </script>
+</body>
+</html>
