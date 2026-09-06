@@ -38,38 +38,45 @@ auth.get('/github/callback', async (c) => {
     return c.redirect(`${c.env.FRONTEND_URL}/login?error=oauth_failed`);
   }
 
-  const tokenResponse = await fetch('https://github.com/login/oauth/access_token', {
-    method: 'POST',
-    headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      client_id: c.env.GITHUB_CLIENT_ID,
-      client_secret: c.env.GITHUB_CLIENT_SECRET,
-      code,
-    }),
-  });
+  let githubUser: { id: number; login: string };
 
-  if (!tokenResponse.ok) {
+  try {
+    const tokenResponse = await fetch('https://github.com/login/oauth/access_token', {
+      method: 'POST',
+      headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        client_id: c.env.GITHUB_CLIENT_ID,
+        client_secret: c.env.GITHUB_CLIENT_SECRET,
+        code,
+      }),
+    });
+
+    if (!tokenResponse.ok) {
+      return c.redirect(`${c.env.FRONTEND_URL}/login?error=oauth_failed`);
+    }
+
+    const tokenData = (await tokenResponse.json()) as { access_token?: string };
+    if (!tokenData.access_token) {
+      return c.redirect(`${c.env.FRONTEND_URL}/login?error=oauth_failed`);
+    }
+
+    const userResponse = await fetch('https://api.github.com/user', {
+      headers: {
+        Authorization: `Bearer ${tokenData.access_token}`,
+        'User-Agent': 'parsigames',
+        Accept: 'application/vnd.github+json',
+      },
+    });
+
+    if (!userResponse.ok) {
+      return c.redirect(`${c.env.FRONTEND_URL}/login?error=oauth_failed`);
+    }
+
+    githubUser = (await userResponse.json()) as { id: number; login: string };
+  } catch {
     return c.redirect(`${c.env.FRONTEND_URL}/login?error=oauth_failed`);
   }
 
-  const tokenData = (await tokenResponse.json()) as { access_token?: string };
-  if (!tokenData.access_token) {
-    return c.redirect(`${c.env.FRONTEND_URL}/login?error=oauth_failed`);
-  }
-
-  const userResponse = await fetch('https://api.github.com/user', {
-    headers: {
-      Authorization: `Bearer ${tokenData.access_token}`,
-      'User-Agent': 'parsigames',
-      Accept: 'application/vnd.github+json',
-    },
-  });
-
-  if (!userResponse.ok) {
-    return c.redirect(`${c.env.FRONTEND_URL}/login?error=oauth_failed`);
-  }
-
-  const githubUser = (await userResponse.json()) as { id: number; login: string };
   const githubId = String(githubUser.id);
 
   const existing = await findUserByGithubId(c.env.DB, githubId);
