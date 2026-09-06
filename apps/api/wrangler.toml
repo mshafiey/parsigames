@@ -1,0 +1,19 @@
+name = "parsigames-api"
+main = "src/index.ts"
+compatibility_date = "2024-09-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "parsigames-db"
+database_id = "66fc5afe-5f6e-4e34-aa3f-e0ce9126301e"
+
+[[kv_namespaces]]
+binding = "SESSIONS"
+id = "d3bab3797fbe480f8cb60c6b40fe50d0"
+
+[vars]
+FRONTEND_URL = "https://parsigames.org"
+GITHUB_CLIENT_ID = "TODO_FILL_IN_AFTER_GITHUB_OAUTH_APP_SETUP"
+
+# Secrets (GITHUB_CLIENT_SECRET, RESEND_API_KEY) are set via
+# `wrangler secret put <NAME>` — never written to this file.
