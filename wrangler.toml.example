@@ -1,0 +1,17 @@
+# Template only — copy the real, filled-in version into parsigames-infra/wrangler.toml.
+# Never commit real Account IDs or resource IDs here.
+name = "parsigames"
+compatibility_date = "2024-01-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "parsigames-db"
+database_id = "REPLACE_ME"
+
+[[r2_buckets]]
+binding = "PREVIEWS"
+bucket_name = "parsigames-previews"
+
+[[kv_namespaces]]
+binding = "SESSIONS"
+id = "REPLACE_ME"
