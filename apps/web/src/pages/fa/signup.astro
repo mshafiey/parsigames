@@ -1,23 +1,15 @@
 ---
-import '../styles/tokens.css';
+import PageLayout from '../../layouts/PageLayout.astro';
 ---
-<!doctype html>
-<html lang="fa" dir="rtl">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>تکمیل ثبت‌نام — Parsi Games</title>
+<PageLayout lang="fa" title="تکمیل ثبت‌نام — پارسی گیمز" pathFa="/fa/signup/" pathEn="/en/signup/">
   <style>
     body { font-family: var(--font-fa); background: var(--color-bg); color: var(--color-text); display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 2rem; gap: 1rem; }
     .block { max-width: 28rem; width: 100%; }
-    .en { direction: ltr; font-family: var(--font-en); margin-top: 2rem; }
     input { width: 100%; padding: 0.6rem; margin-bottom: 0.5rem; border-radius: 0.4rem; border: 1px solid #ccc; box-sizing: border-box; }
     label { display: flex; align-items: flex-start; gap: 0.5rem; font-size: 0.9rem; margin: 1rem 0; }
     button.btn { display: block; width: 100%; padding: 0.75rem; border-radius: 0.4rem; border: none; font-weight: 600; cursor: pointer; background: var(--color-crimson); color: white; }
-    #status, #status-en { min-height: 1.5rem; font-size: 0.9rem; }
+    #status { min-height: 1.5rem; font-size: 0.9rem; }
   </style>
-</head>
-<body>
   <div class="block" lang="fa" dir="rtl">
     <h1>یک قدم تا پیوستن</h1>
     <p>نام مستعار خود را انتخاب کنید — نه نام واقعی.</p>
@@ -28,17 +20,6 @@ import '../styles/tokens.css';
     </label>
     <button class="btn" id="submit">تکمیل ثبت‌نام</button>
     <div id="status"></div>
-  </div>
-  <div class="block en" lang="en" dir="ltr">
-    <h1>One step to join</h1>
-    <p>Choose your alias — not your real name.</p>
-    <input type="text" id="alias-en" placeholder="Alias" />
-    <label>
-      <input type="checkbox" id="consent-en" />
-      <span>I agree that Parsi Games may retain my minimal data per the privacy policy.</span>
-    </label>
-    <button class="btn" id="submit-en">Complete signup</button>
-    <div id="status-en"></div>
   </div>
   <script type="module">
     const API_BASE = 'https://api.parsigames.org';
@@ -60,28 +41,23 @@ import '../styles/tokens.css';
     const suggested = params.get('suggested') ?? '';
 
     document.getElementById('alias').value = suggested;
-    document.getElementById('alias-en').value = suggested;
 
-    async function handleSubmit(aliasId, consentId, statusId) {
-      const alias = document.getElementById(aliasId).value.trim();
-      const consent = document.getElementById(consentId).checked;
-      const status = document.getElementById(statusId);
+    document.getElementById('submit').addEventListener('click', async () => {
+      const alias = document.getElementById('alias').value.trim();
+      const consent = document.getElementById('consent').checked;
+      const status = document.getElementById('status');
 
       if (!consent) {
-        status.textContent = 'باید موافقت کنید / You must agree first.';
+        status.textContent = 'باید موافقت کنید.';
         return;
       }
 
       const result = await completeSignup({ alias, githubId, email, consent });
       if (result.ok) {
-        window.location.href = '/me/edit';
+        window.location.href = '/fa/me/edit/';
       } else {
-        status.textContent = `خطا / Error: ${result.error}`;
+        status.textContent = `خطا: ${result.error}`;
       }
-    }
-
-    document.getElementById('submit').addEventListener('click', () => handleSubmit('alias', 'consent', 'status'));
-    document.getElementById('submit-en').addEventListener('click', () => handleSubmit('alias-en', 'consent-en', 'status-en'));
+    });
   </script>
-</body>
-</html>
+</PageLayout>

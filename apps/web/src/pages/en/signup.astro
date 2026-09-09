@@ -1,0 +1,63 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+---
+<PageLayout lang="en" title="Complete Signup — Parsi Games" pathFa="/fa/signup/" pathEn="/en/signup/">
+  <style>
+    body { font-family: var(--font-en); background: var(--color-bg); color: var(--color-text); display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 2rem; gap: 1rem; }
+    .block { max-width: 28rem; width: 100%; }
+    input { width: 100%; padding: 0.6rem; margin-bottom: 0.5rem; border-radius: 0.4rem; border: 1px solid #ccc; box-sizing: border-box; }
+    label { display: flex; align-items: flex-start; gap: 0.5rem; font-size: 0.9rem; margin: 1rem 0; }
+    button.btn { display: block; width: 100%; padding: 0.75rem; border-radius: 0.4rem; border: none; font-weight: 600; cursor: pointer; background: var(--color-crimson); color: white; }
+    #status { min-height: 1.5rem; font-size: 0.9rem; }
+  </style>
+  <div class="block" lang="en" dir="ltr">
+    <h1>One step to join</h1>
+    <p>Choose your alias — not your real name.</p>
+    <input type="text" id="alias" placeholder="Alias" />
+    <label>
+      <input type="checkbox" id="consent" />
+      <span>I agree that Parsi Games may retain my minimal data per the privacy policy.</span>
+    </label>
+    <button class="btn" id="submit">Complete signup</button>
+    <div id="status"></div>
+  </div>
+  <script type="module">
+    const API_BASE = 'https://api.parsigames.org';
+
+    async function completeSignup(payload) {
+      const res = await fetch(`${API_BASE}/signup`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      return res.ok ? { ok: true } : { ok: false, error: data.error };
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    const githubId = params.get('githubId') ?? undefined;
+    const email = params.get('email') ?? undefined;
+    const suggested = params.get('suggested') ?? '';
+
+    document.getElementById('alias').value = suggested;
+
+    document.getElementById('submit').addEventListener('click', async () => {
+      const alias = document.getElementById('alias').value.trim();
+      const consent = document.getElementById('consent').checked;
+      const status = document.getElementById('status');
+
+      if (!consent) {
+        status.textContent = 'You must agree first.';
+        return;
+      }
+
+      const result = await completeSignup({ alias, githubId, email, consent });
+      if (result.ok) {
+        window.location.href = '/en/me/edit/';
+      } else {
+        status.textContent = `Error: ${result.error}`;
+      }
+    });
+  </script>
+</PageLayout>
