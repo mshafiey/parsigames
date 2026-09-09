@@ -1,0 +1,31 @@
+---
+import PageLayout from '../../../layouts/PageLayout.astro';
+---
+<PageLayout lang="fa" title="پروفایل — پارسی گیمز" pathFa="/fa/u/" pathEn="/en/u/">
+  <style>
+    body { font-family: var(--font-fa); background: var(--color-bg); color: var(--color-text); display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 2rem; gap: 1rem; }
+    .block { max-width: 28rem; width: 100%; text-align: center; }
+  </style>
+  <div class="block" lang="fa" dir="rtl">
+    <h1 id="alias"></h1>
+    <p id="bio">در حال بارگذاری...</p>
+  </div>
+  <script type="module">
+    const API_BASE = 'https://api.parsigames.org';
+
+    const alias = window.location.pathname.replace(/^\/fa\/u\//, '').replace(/\/$/, '');
+    document.getElementById('alias').textContent = alias;
+
+    fetch(`${API_BASE}/users/${encodeURIComponent(alias)}`)
+      .then(async (res) => {
+        if (!res.ok) throw new Error('not found');
+        return res.json();
+      })
+      .then((user) => {
+        document.getElementById('bio').textContent = user.bio || 'بدون بیوگرافی';
+      })
+      .catch(() => {
+        document.getElementById('bio').textContent = 'کاربر پیدا نشد.';
+      });
+  </script>
+</PageLayout>
