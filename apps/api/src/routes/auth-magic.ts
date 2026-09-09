@@ -56,7 +56,7 @@ magic.post('/magic/request', async (c) => {
 magic.get('/magic/verify', async (c) => {
   const lang = resolveLang(getCookie(c, LANG_COOKIE));
   const token = c.req.query('token');
-  if (!token) return c.redirect(`${c.env.FRONTEND_URL}/${lang}/login?error=link_invalid`);
+  if (!token) return c.redirect(`${c.env.FRONTEND_URL}/${lang}/login/?error=link_invalid`);
 
   const row = await c.env.DB
     .prepare('SELECT * FROM magic_link_tokens WHERE token = ?')
@@ -64,7 +64,7 @@ magic.get('/magic/verify', async (c) => {
     .first<{ email: string; expires_at: string; consumed_at: string | null }>();
 
   if (!row || row.consumed_at || new Date(row.expires_at) < new Date()) {
-    return c.redirect(`${c.env.FRONTEND_URL}/${lang}/login?error=link_invalid`);
+    return c.redirect(`${c.env.FRONTEND_URL}/${lang}/login/?error=link_invalid`);
   }
 
   await c.env.DB
@@ -75,7 +75,7 @@ magic.get('/magic/verify', async (c) => {
   const existing = await findUserByEmail(c.env.DB, row.email);
 
   if (!existing) {
-    const url = new URL(`${c.env.FRONTEND_URL}/${lang}/signup`);
+    const url = new URL(`${c.env.FRONTEND_URL}/${lang}/signup/`);
     url.searchParams.set('email', row.email);
     return c.redirect(url.toString());
   }
@@ -89,7 +89,7 @@ magic.get('/magic/verify', async (c) => {
     maxAge: 60 * 60 * 24 * 30,
   });
 
-  return c.redirect(`${c.env.FRONTEND_URL}/${lang}/me/edit`);
+  return c.redirect(`${c.env.FRONTEND_URL}/${lang}/me/edit/`);
 });
 
 export default magic;

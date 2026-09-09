@@ -38,7 +38,7 @@ auth.get('/github/callback', async (c) => {
   const expectedState = getCookie(c, STATE_COOKIE);
 
   if (!code || !state || !expectedState || state !== expectedState) {
-    return c.redirect(`${c.env.FRONTEND_URL}/${lang}/login?error=oauth_failed`);
+    return c.redirect(`${c.env.FRONTEND_URL}/${lang}/login/?error=oauth_failed`);
   }
 
   let githubUser: { id: number; login: string };
@@ -55,12 +55,12 @@ auth.get('/github/callback', async (c) => {
     });
 
     if (!tokenResponse.ok) {
-      return c.redirect(`${c.env.FRONTEND_URL}/${lang}/login?error=oauth_failed`);
+      return c.redirect(`${c.env.FRONTEND_URL}/${lang}/login/?error=oauth_failed`);
     }
 
     const tokenData = (await tokenResponse.json()) as { access_token?: string };
     if (!tokenData.access_token) {
-      return c.redirect(`${c.env.FRONTEND_URL}/${lang}/login?error=oauth_failed`);
+      return c.redirect(`${c.env.FRONTEND_URL}/${lang}/login/?error=oauth_failed`);
     }
 
     const userResponse = await fetch('https://api.github.com/user', {
@@ -72,12 +72,12 @@ auth.get('/github/callback', async (c) => {
     });
 
     if (!userResponse.ok) {
-      return c.redirect(`${c.env.FRONTEND_URL}/${lang}/login?error=oauth_failed`);
+      return c.redirect(`${c.env.FRONTEND_URL}/${lang}/login/?error=oauth_failed`);
     }
 
     githubUser = (await userResponse.json()) as { id: number; login: string };
   } catch {
-    return c.redirect(`${c.env.FRONTEND_URL}/${lang}/login?error=oauth_failed`);
+    return c.redirect(`${c.env.FRONTEND_URL}/${lang}/login/?error=oauth_failed`);
   }
 
   const githubId = String(githubUser.id);
@@ -85,7 +85,7 @@ auth.get('/github/callback', async (c) => {
   const existing = await findUserByGithubId(c.env.DB, githubId);
 
   if (!existing) {
-    const url = new URL(`${c.env.FRONTEND_URL}/${lang}/signup`);
+    const url = new URL(`${c.env.FRONTEND_URL}/${lang}/signup/`);
     url.searchParams.set('githubId', githubId);
     url.searchParams.set('suggested', githubUser.login);
     return c.redirect(url.toString());
@@ -100,7 +100,7 @@ auth.get('/github/callback', async (c) => {
     maxAge: 60 * 60 * 24 * 30,
   });
 
-  return c.redirect(`${c.env.FRONTEND_URL}/${lang}/me/edit`);
+  return c.redirect(`${c.env.FRONTEND_URL}/${lang}/me/edit/`);
 });
 
 export default auth;
