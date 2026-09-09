@@ -7,9 +7,10 @@ export interface Props {
   pathFa: string;
   pathEn: string;
   description?: string;
+  dynamicPath?: boolean;
 }
 
-const { lang, title, pathFa, pathEn, description } = Astro.props;
+const { lang, title, pathFa, pathEn, description, dynamicPath = false } = Astro.props;
 const dir = lang === 'fa' ? 'rtl' : 'ltr';
 const switchHref = lang === 'fa' ? pathEn : pathFa;
 const switchLabel = lang === 'fa' ? 'English' : 'فارسی';
@@ -22,9 +23,19 @@ const base = 'https://parsigames.org';
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{title}</title>
   {description && <meta name="description" content={description} />}
-  <link rel="alternate" hreflang="fa" href={`${base}${pathFa}`} />
-  <link rel="alternate" hreflang="en" href={`${base}${pathEn}`} />
-  <link rel="alternate" hreflang="x-default" href={`${base}${pathEn}`} />
+  {!dynamicPath && (
+    <>
+      <link rel="alternate" hreflang="fa" href={`${base}${pathFa}`} />
+      <link rel="alternate" hreflang="en" href={`${base}${pathEn}`} />
+      <link rel="alternate" hreflang="x-default" href={`${base}${pathEn}`} />
+    </>
+  )}
+  <!-- Every page that consumes this layout puts its own base styling in a bare
+       `body { }` selector inside its own <style> block. Astro leaves bare
+       element selectors like `body` unscoped (unlike class/id selectors, which
+       get a `[data-astro-cid-...]` attribute appended), so this works only as
+       long as pages keep using a bare `body` selector rather than wrapping it
+       in a class — wrapping it would silently stop the styling from applying. -->
   <style>
     .lang-switch {
       position: fixed;
@@ -42,10 +53,24 @@ const base = 'https://parsigames.org';
   </style>
 </head>
 <body>
-  <a class="lang-switch" href={switchHref}>{switchLabel}</a>
+  <a class="lang-switch" id="lang-switch" href={switchHref}>{switchLabel}</a>
   <slot />
   <script define:vars={{ lang }}>
+    // domain=parsigames.org means this cookie is never set on localhost or
+    // *.pages.dev preview deployments (browsers reject a Domain attribute
+    // that doesn't match the current host). Harmless in production — the
+    // API just defaults to `en` when the cookie is absent — but worth
+    // knowing before debugging language detection on a preview deploy.
     document.cookie = `pg_lang=${lang}; path=/; max-age=31536000; samesite=lax; secure; domain=parsigames.org`;
+
+    // The static switchHref above is correct for pages with a fixed path
+    // (home, login, me/edit), but wrong for pages with dynamic content in
+    // the URL (query params, path segments). Recompute it at runtime from
+    // the actual current URL so it preserves the query string and any
+    // dynamic path segment; the static href remains the no-JS fallback.
+    const otherLang = lang === 'fa' ? 'en' : 'fa';
+    const newPath = window.location.pathname.replace(/^\/(fa|en)\//, `/${otherLang}/`);
+    document.getElementById('lang-switch').href = newPath + window.location.search;
   </script>
 </body>
 </html>
