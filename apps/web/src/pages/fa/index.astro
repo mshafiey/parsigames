@@ -1,0 +1,25 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+---
+<PageLayout
+  lang="fa"
+  title="پارسی گیمز"
+  pathFa="/fa/"
+  pathEn="/en/"
+  description="امروز می‌سازیم، برای فردایی که همهٔ ایرانی‌ها آزادانه در آن سهیم‌اند."
+>
+  <style>
+    body { margin: 0; background: var(--color-bg); color: var(--color-text); display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; text-align: center; padding: 2rem; gap: 2rem; }
+    .block { max-width: 32rem; font-family: var(--font-fa); }
+    h1 { color: var(--color-lapis); font-size: 2rem; margin: 0 0 0.5rem; }
+    p.tagline { color: var(--color-turquoise); font-weight: 600; margin: 0 0 1rem; }
+    p.desc { margin: 0 0 1.5rem; line-height: 1.6; }
+    a.cta { display: inline-block; background: var(--color-crimson); color: white; text-decoration: none; padding: 0.75rem 1.75rem; border-radius: 0.4rem; font-weight: 600; border-bottom: 3px solid var(--color-gold); }
+  </style>
+  <div class="block" lang="fa" dir="rtl">
+    <h1>پارسی گیمز</h1>
+    <p class="tagline">امروز می‌سازیم، برای فردایی که همهٔ ایرانی‌ها آزادانه در آن سهیم‌اند.</p>
+    <p class="desc">پلتفرمی اوپن‌سورس که متخصصان ایرانی حوزهٔ بازی‌سازی، برنامه‌نویسی و هنر دیجیتال را در سرتاسر جهان گرد هم می‌آورد.</p>
+    <a class="cta" href="/fa/login/">به ما بپیوندید</a>
+  </div>
+</PageLayout>
