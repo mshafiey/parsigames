@@ -45,7 +45,7 @@ const base = 'https://parsigames.org';
   <a class="lang-switch" href={switchHref}>{switchLabel}</a>
   <slot />
   <script define:vars={{ lang }}>
-    document.cookie = `pg_lang=${lang}; path=/; max-age=31536000; samesite=lax; domain=parsigames.org`;
+    document.cookie = `pg_lang=${lang}; path=/; max-age=31536000; samesite=lax; secure; domain=parsigames.org`;
   </script>
 </body>
 </html>
