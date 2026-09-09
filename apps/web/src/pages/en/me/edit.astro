@@ -1,0 +1,57 @@
+---
+import PageLayout from '../../../layouts/PageLayout.astro';
+---
+<PageLayout lang="en" title="Edit Profile — Parsi Games" pathFa="/fa/me/edit/" pathEn="/en/me/edit/">
+  <style>
+    body { font-family: var(--font-en); background: var(--color-bg); color: var(--color-text); display: flex; flex-direction: column; align-items: center; padding: 2rem; gap: 1rem; }
+    .block { max-width: 32rem; width: 100%; }
+    input, textarea { width: 100%; padding: 0.6rem; margin-bottom: 0.5rem; border-radius: 0.4rem; border: 1px solid #ccc; box-sizing: border-box; font-family: inherit; }
+    button.btn { padding: 0.6rem 1.2rem; border-radius: 0.4rem; border: none; font-weight: 600; cursor: pointer; margin-inline-end: 0.5rem; }
+    #save { background: var(--color-turquoise); color: white; }
+    #delete { background: var(--color-crimson); color: white; }
+    #status { min-height: 1.5rem; font-size: 0.9rem; }
+  </style>
+  <div class="block" lang="en" dir="ltr">
+    <h1>Edit Profile</h1>
+    <p id="alias-display"></p>
+    <textarea id="bio" placeholder="Short bio" rows="4"></textarea>
+    <button class="btn" id="save">Save</button>
+    <button class="btn" id="delete">Delete account</button>
+    <div id="status"></div>
+  </div>
+  <script type="module">
+    const API_BASE = 'https://api.parsigames.org';
+
+    async function loadProfile() {
+      const res = await fetch(`${API_BASE}/me`, { credentials: 'include' });
+      if (!res.ok) {
+        window.location.href = '/en/login/';
+        return;
+      }
+      const user = await res.json();
+      document.getElementById('alias-display').textContent = `Alias: ${user.alias}`;
+      document.getElementById('bio').value = user.bio ?? '';
+    }
+
+    document.getElementById('save').addEventListener('click', async () => {
+      const bio = document.getElementById('bio').value;
+      const status = document.getElementById('status');
+      const res = await fetch(`${API_BASE}/me`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ bio, skillTags: [], externalLinks: [] }),
+      });
+      status.textContent = res.ok ? 'Saved' : 'Error';
+    });
+
+    document.getElementById('delete').addEventListener('click', async () => {
+      const confirmed = window.confirm('Are you sure?');
+      if (!confirmed) return;
+      await fetch(`${API_BASE}/me/delete`, { method: 'POST', credentials: 'include' });
+      window.location.href = '/';
+    });
+
+    loadProfile();
+  </script>
+</PageLayout>
