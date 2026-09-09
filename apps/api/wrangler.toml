@@ -13,7 +13,7 @@ id = "d3bab3797fbe480f8cb60c6b40fe50d0"
 
 [vars]
 FRONTEND_URL = "https://parsigames.org"
-GITHUB_CLIENT_ID = "TODO_FILL_IN_AFTER_GITHUB_OAUTH_APP_SETUP"
+GITHUB_CLIENT_ID = "Ov23likUeUE5M5HL0dgv"
 
 # Secrets (GITHUB_CLIENT_SECRET, RESEND_API_KEY) are set via
 # `wrangler secret put <NAME>` — never written to this file.
