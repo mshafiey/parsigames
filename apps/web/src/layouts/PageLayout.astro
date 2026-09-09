@@ -1,0 +1,51 @@
+---
+import '../styles/tokens.css';
+
+export interface Props {
+  lang: 'fa' | 'en';
+  title: string;
+  pathFa: string;
+  pathEn: string;
+  description?: string;
+}
+
+const { lang, title, pathFa, pathEn, description } = Astro.props;
+const dir = lang === 'fa' ? 'rtl' : 'ltr';
+const switchHref = lang === 'fa' ? pathEn : pathFa;
+const switchLabel = lang === 'fa' ? 'English' : 'فارسی';
+const base = 'https://parsigames.org';
+---
+<!doctype html>
+<html lang={lang} dir={dir}>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{title}</title>
+  {description && <meta name="description" content={description} />}
+  <link rel="alternate" hreflang="fa" href={`${base}${pathFa}`} />
+  <link rel="alternate" hreflang="en" href={`${base}${pathEn}`} />
+  <link rel="alternate" hreflang="x-default" href={`${base}${pathEn}`} />
+  <style>
+    .lang-switch {
+      position: fixed;
+      top: 1rem;
+      inset-inline-end: 1rem;
+      font-size: 0.85rem;
+      color: var(--color-lapis);
+      text-decoration: none;
+      background: white;
+      padding: 0.3rem 0.7rem;
+      border-radius: 0.3rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+      z-index: 10;
+    }
+  </style>
+</head>
+<body>
+  <a class="lang-switch" href={switchHref}>{switchLabel}</a>
+  <slot />
+  <script define:vars={{ lang }}>
+    document.cookie = `pg_lang=${lang}; path=/; max-age=31536000; samesite=lax; domain=parsigames.org`;
+  </script>
+</body>
+</html>

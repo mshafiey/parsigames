@@ -1,0 +1,47 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+---
+<PageLayout lang="en" title="Sign in — Parsi Games" pathFa="/fa/login/" pathEn="/en/login/">
+  <style>
+    body { font-family: var(--font-en); background: var(--color-bg); color: var(--color-text); display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 2rem; gap: 1.5rem; }
+    .block { max-width: 26rem; width: 100%; text-align: center; }
+    a.btn, button.btn { display: block; width: 100%; padding: 0.75rem; margin: 0.5rem 0; border-radius: 0.4rem; border: none; font-weight: 600; cursor: pointer; text-decoration: none; }
+    a.btn { background: var(--color-lapis); color: white; }
+    input { width: 100%; padding: 0.6rem; margin-bottom: 0.5rem; border-radius: 0.4rem; border: 1px solid #ccc; box-sizing: border-box; }
+    button.btn { background: var(--color-turquoise); color: white; }
+    #status { min-height: 1.5rem; font-size: 0.9rem; }
+  </style>
+  <div class="block" lang="en" dir="ltr">
+    <h1>Sign in to Parsi Games</h1>
+    <a class="btn" href="https://api.parsigames.org/auth/github/start">Sign in with GitHub</a>
+    <p>or with email:</p>
+    <input type="email" id="email" placeholder="Your email" />
+    <button class="btn" id="send">Send login link</button>
+    <div id="status"></div>
+  </div>
+  <script type="module">
+    const API_BASE = 'https://api.parsigames.org';
+
+    async function requestMagicLink(email) {
+      const res = await fetch(`${API_BASE}/auth/magic/request`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ email }),
+      });
+      const data = await res.json();
+      return res.ok ? { ok: true } : { ok: false, error: data.error };
+    }
+
+    document.getElementById('send').addEventListener('click', async () => {
+      const email = document.getElementById('email').value.trim();
+      const status = document.getElementById('status');
+      if (!email) return;
+      status.textContent = '...';
+      const result = await requestMagicLink(email);
+      status.textContent = result.ok
+        ? 'Link sent — check your email.'
+        : `Error: ${result.error}`;
+    });
+  </script>
+</PageLayout>
