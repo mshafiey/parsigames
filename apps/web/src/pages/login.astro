@@ -36,7 +36,18 @@ import '../styles/tokens.css';
     <div id="status-en"></div>
   </div>
   <script type="module">
-    import { requestMagicLink } from '/src/lib/api.ts';
+    const API_BASE = 'https://api.parsigames.org';
+
+    async function requestMagicLink(email) {
+      const res = await fetch(`${API_BASE}/auth/magic/request`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ email }),
+      });
+      const data = await res.json();
+      return res.ok ? { ok: true } : { ok: false, error: data.error };
+    }
 
     async function handleSend(emailInputId, statusId) {
       const email = document.getElementById(emailInputId).value.trim();

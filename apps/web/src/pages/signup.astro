@@ -41,7 +41,18 @@ import '../styles/tokens.css';
     <div id="status-en"></div>
   </div>
   <script type="module">
-    import { completeSignup } from '/src/lib/api.ts';
+    const API_BASE = 'https://api.parsigames.org';
+
+    async function completeSignup(payload) {
+      const res = await fetch(`${API_BASE}/signup`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      return res.ok ? { ok: true } : { ok: false, error: data.error };
+    }
 
     const params = new URLSearchParams(window.location.search);
     const githubId = params.get('githubId') ?? undefined;

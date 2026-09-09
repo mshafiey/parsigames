@@ -23,7 +23,7 @@ import '../../styles/tokens.css';
     <p id="bio-en">Loading...</p>
   </div>
   <script type="module">
-    import { API_BASE } from '/src/lib/api.ts';
+    const API_BASE = 'https://api.parsigames.org';
 
     const alias = window.location.pathname.replace(/^\/u\//, '').replace(/\/$/, '');
     document.getElementById('alias-fa').textContent = alias;

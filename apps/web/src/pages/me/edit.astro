@@ -36,7 +36,7 @@ import '../../styles/tokens.css';
     <div id="status-en"></div>
   </div>
   <script type="module">
-    import { API_BASE } from '/src/lib/api.ts';
+    const API_BASE = 'https://api.parsigames.org';
 
     async function loadProfile() {
       const res = await fetch(`${API_BASE}/me`, { credentials: 'include' });
